@@ -57,31 +57,37 @@ python backend/graph.py
 
 ## 🧠 Architecture
 
+This system uses **three specialized LLMs** to handle different reasoning stages in an OSINT pipeline:
+
 ```text
-+--------------------+
-|  Query Analysis    | ← Claude (structured parsing)
-+--------------------+
-          ↓
-+--------------------+
-|   Planning Agent   | ← Claude (source selection)
-+--------------------+
-          ↓
-+--------------------+
-| Multi-Source Fetch | ← SerpAPI, stubs (Twitter, LinkedIn), OpenCorporates
-+--------------------+
-          ↓
-+--------------------+
-|   Pivoting Agent   | ← Claude (related entities, graph)
-+--------------------+
-          ↓
-+--------------------+
-|  Synthesis Agent   | ← Gemini 1.5 Pro or GPT-4o
-+--------------------+
-          ↓
-+--------------------+
-|  Final Report + DB |
-+--------------------+
-```
++----------------------------+
+|  Query Analysis Agent      |
+|  Claude Sonnet 4           |
++----------------------------+
+             ↓
++----------------------------+
+|  Planning Agent            |
+|  Claude Sonnet 4           |
++----------------------------+
+             ↓
++----------------------------+
+|  Multi-Source Retriever    |
+|  Claude Sonnet 4 (orchestrator) |
++----------------------------+
+             ↓
++----------------------------+
+|  Pivoting Agent            |
+|  GPT-4o (cross-analysis)   |
++----------------------------+
+             ↓
++----------------------------+
+|  Synthesis Agent           |
+|  Gemini 1.5 Pro (long report) |
++----------------------------+
+             ↓
++----------------------------+
+|  Final Report + DB Save    |
++----------------------------+
 
 ---
 
