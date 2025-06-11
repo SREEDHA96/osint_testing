@@ -3,11 +3,14 @@
 import os
 import json
 from dotenv import load_dotenv
-from openai import OpenAI  # Replace with Gemini SDK if needed
+import google.generativeai as genai
 
-# Load environment variables
+# ✅ Load environment variables
 load_dotenv()
-client = OpenAI(api_key=os.getenv("GEMINI_API_KEY"))  # Swap with Gemini client if using Vertex AI, etc.
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
+# ✅ Load Gemini 1.5 Pro model
+model = genai.GenerativeModel("gemini-1.5-pro")
 
 def synthesis_agent(entity: str, plan: dict, articles: list, pivots: dict) -> str:
     """
@@ -87,15 +90,8 @@ Pivot Insights:
 {json.dumps(pivots, indent=2)}
 """
 
-
     try:
-        response = client.chat.completions.create(
-            model="gpt-4o",  # Replace with Gemini 1.5 Pro call if available
-            messages=[{"role": "user", "content": prompt.strip()}],
-            temperature=0.3,
-            max_tokens=3000
-        )
-        return response.choices[0].message.content.strip()
-
+        response = model.generate_content(prompt.strip())
+        return response.text.strip()
     except Exception as e:
         return f"❌ Error during synthesis: {e}"
