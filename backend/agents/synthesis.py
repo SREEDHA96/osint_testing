@@ -1,23 +1,18 @@
-# backend/agents/synthesis.py
-
 import os
 import json
+import openai
+from openai import OpenAI
 from dotenv import load_dotenv
-import google.generativeai as genai
+import traceback
 
-# ✅ Load environment variables
+# Load .env
 load_dotenv()
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-# ✅ Load Gemini 1.5 Pro model
-model = genai.GenerativeModel("gemini-1.5-pro")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def synthesis_agent(entity: str, plan: dict, articles: list, pivots: dict) -> str:
-    """
-    Synthesize a full OSINT report using all previous agent outputs.
-    """
-
-    prompt = f"""
+    try:
+        prompt = f"""
 You are an OSINT Synthesis Agent.
 
 Your job is to generate a comprehensive, structured OSINT intelligence report based on multi-agent investigation data.
@@ -90,8 +85,15 @@ Pivot Insights:
 {json.dumps(pivots, indent=2)}
 """
 
-    try:
-        response = model.generate_content(prompt.strip())
-        return response.text.strip()
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt.strip()}],
+            temperature=0.3,
+            max_tokens=3000,
+        )
+        print("🚀 Using GPT-4o synthesis agent")
+        return response.choices[0].message.content.strip()
+
     except Exception as e:
-        return f"❌ Error during synthesis: {e}"
+        traceback.print_exc()
+        return f"❌ Error during synthesis:\n\n{str(e)}"
