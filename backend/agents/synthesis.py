@@ -7,11 +7,58 @@ import traceback
 
 # Load .env
 load_dotenv()
-
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def synthesis_agent(entity: str, plan: dict, articles: list, pivots: dict) -> str:
     try:
+        # Fallback if no articles retrieved
+        if not articles:
+            return f"""
+# OSINT Intelligence Report: {entity}
+
+## Executive Summary
+- No articles or content chunks were retrieved, leading to a lack of data for analysis.
+- The investigation was unable to provide insights into {entity}'s social, professional, or political activities.
+- There are significant gaps in the information due to the absence of retrieved data.
+- Further investigation is required to fulfill the objectives outlined in the collection plan.
+
+## Investigation Objectives
+{json.dumps(plan.get('objectives', []), indent=2)}
+
+## Information Sources & Retrieval Log
+_No data retrieved._
+
+## Key Findings
+_No key findings could be reported due to lack of data._
+
+## Inconsistencies or Gaps
+The investigation encountered a significant gap due to missing content chunks.
+
+## Follow-Up Queries
+1. "{entity} biography and career"
+2. "{entity} recent news coverage"
+3. "Social media activity of {entity}"
+
+## Appendix: Retrieved Snippets
+_No content snippets were available._
+
+## Entity Relationship Graph
+_No relationships extracted._
+
+## Confidence & Attribution
+**Confidence Rating: Low**
+
+- **Number of Sources Used**: 0
+- **Credibility of Sources**: Not applicable
+- **Recency**: Not applicable
+- **Coverage of Goals**: Not met
+"""
+
+        # Ensure all articles have "used_in" field
+        for article in articles:
+            if "used_in" not in article:
+                article["used_in"] = ["synthesis"]
+
         prompt = f"""
 You are an OSINT Synthesis Agent.
 

@@ -101,6 +101,16 @@ def retriever_node(state: GraphState) -> dict:
 
     deduped = deduplicate_chunks(enriched)
 
+    # ✅ Add the required "used_in" field for synthesis_agent
+    for chunk in deduped:
+        chunk["used_in"] = ["synthesis"]
+
+    if not deduped:
+        print("❌ No deduplicated chunks available — downstream synthesis will receive empty input.")
+    else:
+        print(f"✅ {len(deduped)} chunks ready to pass to synthesis.")
+
+    # Build structured log
     source_log = {}
     for item in deduped:
         source = item["source"]
@@ -115,6 +125,8 @@ def retriever_node(state: GraphState) -> dict:
         "retrieval_log": structured_log,
         "sources": deduped
     }
+
+
 
 # Node 4: Pivoting
 def pivot_node(state: GraphState) -> dict:

@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
-
+import time
 from backend.agents.evaluator import evaluate_report
 from backend.llm_judge import call_claude_opus
 from backend.graph import build_langgraph
@@ -45,7 +45,8 @@ async def query_osint(req: QueryRequest):
     try:
         print("📥 [API] Received query:", req.query)
 
-        final_state = await build_langgraph(req.query)
+        query_with_timestamp = f"{req.query.strip()} [ts:{int(time.time())}]"
+        final_state = await build_langgraph(query_with_timestamp)
         print("✅ [LangGraph] Pipeline execution finished")
 
         report = final_state.get("final_report")
