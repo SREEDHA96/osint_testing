@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from agents.query_analysis import query_analysis_agent
+from backend.agents.query_analysis import query_analysis_agent
 
 
 
