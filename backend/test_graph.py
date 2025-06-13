@@ -1,16 +1,16 @@
 # backend/test_graph.py
 
 import sys, os, json
+import asyncio
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from backend.graph import build_langgraph
 
-def main():
+async def main():
     query = "Investigate Ali Khaledi Nasab’s social and professional background across public records."
 
-    graph = build_langgraph()
     try:
-        result = graph.invoke({"input": query})
+        result = await build_langgraph(query)
     except Exception as e:
         print(f"❌ LangGraph pipeline failed: {str(e)}")
         return
@@ -28,4 +28,4 @@ def main():
     print(result.get("final_report", "⚠️ No report generated."))
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
