@@ -3,7 +3,7 @@ import sys, os, json
 # Ensure parent directory is in the path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from agents.pivot import pivot_agent
+from backend.agents.pivot import pivot_agent
 
 # Sample articles
 articles = [

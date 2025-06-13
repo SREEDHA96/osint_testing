@@ -6,7 +6,7 @@ import os
 # Add the parent directory (project root) to PYTHONPATH
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from agents.retrieval.google_news import google_news_retrieval
+from backend.agents.retrieval.google_news import google_news_retrieval
 
 if __name__ == "__main__":
     entity = "Ali Khaledi Nasab"

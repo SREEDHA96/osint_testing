@@ -3,7 +3,7 @@
 import sys, os, json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from graph import build_langgraph
+from backend.graph import build_langgraph
 
 def main():
     query = "Investigate Ali Khaledi Nasab’s social and professional background across public records."

@@ -1,6 +1,6 @@
 # backend/test_query_debug.py
 
-from agents.query_analysis import query_analysis_agent
+from backend.agents.query_analysis import query_analysis_agent
 
 query = "Investigate Ali Khaledi Nasab’s background"
 result = query_analysis_agent(query)
