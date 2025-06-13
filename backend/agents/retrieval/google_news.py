@@ -1,9 +1,11 @@
 import os
 import requests
 from datetime import datetime
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()  # Load variables from .env file
+ENV_PATH = Path(__file__).resolve().parents[3] / ".env"
+load_dotenv(dotenv_path=ENV_PATH)
 
 def normalize_published_date(raw_date: str) -> str:
     """

@@ -2,13 +2,15 @@
 
 from anthropic import Anthropic
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 import json
 from ..prompts.planner import PLANNER_SYSTEM_PROMPT
 
 
 
-load_dotenv()
+ENV_PATH = Path(__file__).resolve().parents[2] / ".env"
+load_dotenv(dotenv_path=ENV_PATH)
 client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 def osint_planning_agent(parsed_json: dict) -> str:

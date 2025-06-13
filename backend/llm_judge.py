@@ -3,11 +3,13 @@
 import os
 import json
 import re
+from pathlib import Path
 from dotenv import load_dotenv
 from anthropic import AsyncAnthropic
 
 # Load .env variables
-load_dotenv()
+ENV_PATH = Path(__file__).resolve().parents[1] / ".env"
+load_dotenv(dotenv_path=ENV_PATH)
 api_key = os.getenv("ANTHROPIC_API_KEY")
 
 # Instantiate Anthropic client with API key

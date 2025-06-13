@@ -1,11 +1,13 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from anthropic import Anthropic
 from ..prompts.query_analysis import QUERY_ANALYSIS_PROMPT_TEMPLATE
 
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from repository root
+ENV_PATH = Path(__file__).resolve().parents[2] / ".env"
+load_dotenv(dotenv_path=ENV_PATH)
 
 # ✅ Initialize Anthropic client
 client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))

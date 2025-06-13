@@ -2,11 +2,13 @@ import os
 import json
 import openai
 from openai import OpenAI
+from pathlib import Path
 from dotenv import load_dotenv
 import traceback
 
 # Load .env
-load_dotenv()
+ENV_PATH = Path(__file__).resolve().parents[2] / ".env"
+load_dotenv(dotenv_path=ENV_PATH)
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
