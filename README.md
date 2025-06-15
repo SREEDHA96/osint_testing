@@ -73,17 +73,6 @@ To run the pipeline from the command line (no frontend):
 ```bash
 python backend/graph.py
 ```
-### 7. Optional: Run Frontend in Dev Mode
-Use this during development if you want hot reloads:
-```bash
-cd frontend
-npm run dev
-```
-Frontend: http://localhost:5173
-
-Backend: http://127.0.0.1:8000
-
-Make sure CORS is allowed for port 5173 (preconfigured).
 
 Accessing the App
 Once everything is set up and the backend is running:
