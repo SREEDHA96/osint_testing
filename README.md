@@ -47,105 +47,66 @@ SERPAPI_KEY=your-serpapi-key
 
 > ✅ You can use `.env.example` as a template.
 
-### 4. Run an Example Investigation
+🛠️ Execution Details
+🧠 Backend (LangGraph + FastAPI)
+To run the OSINT agent and serve the API:
 
-```bash
+bash
+Copy
+Edit
+# Activate virtual environment
+.\.venv\Scripts\activate   # Windows
+# or
+source .venv/bin/activate  # macOS/Linux
+
+# Start the FastAPI server
+uvicorn backend.main:app --reload
+Endpoint: POST /query
+
+Accepts: { "query": "Your OSINT investigation query" }
+
+Returns: { "report": "...", "evaluation": {...} }
+
+Optional:
+
+GET /history — fetches past investigations from the database
+
+The backend also serves the React frontend statically at http://localhost:8000
+
+💻 Frontend (React + Vite)
+To run the frontend in development mode:
+
+bash
+Copy
+Edit
+cd frontend
+npm install
+npm run dev
+Dev URL: http://localhost:5173
+
+Interacts with FastAPI backend at http://localhost:8000/query
+
+To build for production:
+
+bash
+Copy
+Edit
+npm run build
+Output is generated in frontend/dist/
+
+FastAPI automatically serves these static files in production mode
+
+🧪 Running a Local Investigation (CLI Mode)
+If you prefer testing the pipeline without the UI:
+
+bash
+Copy
+Edit
 python backend/graph.py
-```
-
----
-
-## 🧠 Architecture
-
-This system uses **three specialized LLMs** to handle different reasoning stages in an OSINT pipeline:
-
-```text
-+----------------------------+
-|  Query Analysis Agent      |
-|  Claude Sonnet 4           |
-+----------------------------+
-             ↓
-+----------------------------+
-|  Planning Agent            |
-|  Claude Sonnet 4           |
-+----------------------------+
-             ↓
-+----------------------------+
-|  Multi-Source Retriever    |
-|  Claude Sonnet 4 (orchestrator) |
-+----------------------------+
-             ↓
-+----------------------------+
-|  Pivoting Agent            |
-|  GPT-4o (cross-analysis)   |
-+----------------------------+
-             ↓
-+----------------------------+
-|  Synthesis Agent           |
-|  Gemini 1.5 Pro (long report) |
-+----------------------------+
-             ↓
-+----------------------------+
-|  Final Report + DB Save    |
-+----------------------------+
-
----
-
-## 📦 File Structure
-
-```
-osint-ai-agent_new/
-├── backend/
-│   ├── agents/              # Agent logic (query, planner, retriever, pivot, synthesis)
-│   ├── retrieval/           # Retrieval modules (SerpAPI, stubs)
-│   ├── database/            # DB schema + persistence logic
-│   ├── graph.py             # LangGraph pipeline orchestrator
-│   └── test_retrieval_*.py  # Test scripts
-├── .gitignore
-├── .env.example
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 📥 Sources Integrated
-
-| Source            | Type            | Status         |
-|------------------|------------------|----------------|
-| Google News      | News             | ✅ Real (SerpAPI) |
-| Twitter/X        | Social Media     | 🔁 Stub         |
-| LinkedIn         | Professional Net | 🔁 Stub         |
-| OpenCorporates   | Public Records   | 🔁 Stub         |
-| Academic Sources | Research         | ⏳ Planned      |
-
----
-
-## 🔐 Secrets & Safety
-
-- ✅ `.env` is ignored and never committed  
-- ✅ `.venv/` removed from history and excluded  
-- 🛡️ GitHub push protection enabled  
-
----
-
-## 📈 Roadmap
-
-- [x] Entity graph + relationship extraction  
-- [x] Source credibility scoring  
-- [ ] Timeline of key events  
-- [ ] Risk scoring system  
-- [ ] RAG-based citation-backed answers  
-
----
+This executes the pipeline once for a hardcoded or test query and prints the structured report.
 
 ## 👨‍💻 Author
 
 **Sreedha Bhakthavalsalan**  
 GitHub: [@SREEDHA96](https://github.com/SREEDHA96)
 
----
-
-## 📄 License
-
-MIT License
