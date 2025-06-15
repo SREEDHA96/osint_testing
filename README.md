@@ -78,9 +78,9 @@ Use this during development if you want hot reloads:
 ```bash
 cd frontend
 npm run dev
-```bash
 Frontend: http://localhost:5173
 Backend: http://127.0.0.1:8000
+```
 Make sure CORS is allowed for port 5173 (preconfigured).
 
 Accessing the App
