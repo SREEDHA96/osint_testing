@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 
 load_dotenv()
-SERPAPI_KEY = os.getenv("SERPAPI_API_KEY")
+SERPAPI_KEY = os.getenv("SERPAPI_KEY")
 
 SOURCE_BASE_CREDIBILITY = {
     "reuters": 0.95,
