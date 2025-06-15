@@ -1,3 +1,7 @@
+# 🛠️ Disclaimer
+
+> **This project was developed as part of a technical interview assessment for [Elile.ai](https://elile.ai).**  
+
 # 🕵️‍♂️ OSINT AI Agent
 
 **LangGraph-based OSINT Intelligence Agent** for investigating public figures, organizations, or topics by retrieving and synthesizing information from multiple open sources using LLMs like Claude, GPT-4o, and Gemini.
@@ -47,63 +51,64 @@ SERPAPI_KEY=your-serpapi-key
 
 > ✅ You can use `.env.example` as a template.
 
-🛠️ Execution Details
-🧠 Backend (LangGraph + FastAPI)
-To run the OSINT agent and serve the API:
-
-bash
-Copy
-Edit
-# Activate virtual environment
-.\.venv\Scripts\activate   # Windows
-# or
-source .venv/bin/activate  # macOS/Linux
-
-# Start the FastAPI server
-uvicorn backend.main:app --reload
-Endpoint: POST /query
-
-Accepts: { "query": "Your OSINT investigation query" }
-
-Returns: { "report": "...", "evaluation": {...} }
-
-Optional:
-
-GET /history — fetches past investigations from the database
-
-The backend also serves the React frontend statically at http://localhost:8000
-
-💻 Frontend (React + Vite)
-To run the frontend in development mode:
-
-bash
-Copy
-Edit
+### 4. Build the React Frontend
+```bash
 cd frontend
 npm install
-npm run dev
-Dev URL: http://localhost:5173
-
-Interacts with FastAPI backend at http://localhost:8000/query
-
-To build for production:
-
-bash
-Copy
-Edit
 npm run build
-Output is generated in frontend/dist/
+```
+### 5. Run the Backend Server
+```bash
+cd ..
+uvicorn backend.main:app --reload
+```
+This launches the FastAPI backend at:
+👉 http://127.0.0.1:8000
 
-FastAPI automatically serves these static files in production mode
+The backend will automatically serve the built frontend UI.
 
-🧪 Running a Local Investigation (CLI Mode)
-If you prefer testing the pipeline without the UI:
 
-bash
-Copy
-Edit
+### 6. Run a Sample Investigation (CLI Mode)
+To run the pipeline from the command line (no frontend):
+```bash
 python backend/graph.py
-This executes the pipeline once for a hardcoded or test query and prints the structured report.
+```
+### 7. Optional: Run Frontend in Dev Mode
+Use this during development if you want hot reloads:
+```bash
+cd frontend
+npm run dev
+```bash
+Frontend: http://localhost:5173
+Backend: http://127.0.0.1:8000
+Make sure CORS is allowed for port 5173 (preconfigured).
+
+Accessing the App
+Once everything is set up and the backend is running:
+
+🔹 Open in your browser:
+
+```bash
+http://127.0.0.1:8000
+```bash
+
+🔹 What You Can Do:
+
+Enter an OSINT query
+View the generated intelligence report
+See evaluation scores
+Download the report as a .txt file
+View local history (stored in browser)
+
+📌 Summary
+
+| Component       | Command                             | URL                                            |
+| --------------- | ----------------------------------- | ---------------------------------------------- |
+| Backend (API)   | `uvicorn backend.main:app --reload` | [http://127.0.0.1:8000](http://127.0.0.1:8000) |
+| Frontend (Dev)  | `npm run dev` (inside `/frontend`)  | [http://localhost:5173](http://localhost:5173) |
+| Frontend (Prod) | `npm run build` → served by backend | [http://127.0.0.1:8000](http://127.0.0.1:8000) |
+| CLI Run         | `python backend/graph.py`           | –                                              |
+
 
 ## 👨‍💻 Author
 
